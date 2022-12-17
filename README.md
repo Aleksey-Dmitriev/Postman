@@ -6,7 +6,7 @@ The link looks like https://apichallenges.herokuapp.com/gui/challenges/<your_id_
 (example: https://apichallenges.herokuapp.com/gui/challenges/d297672c-4c11-412c-8f83-4137bf735959)
 API Documentation: https://apichallenges.herokuapp.com/docs
 View of the application itself: https://apichallenges.herokuapp.com/gui/instances?entity=todo
-
+My page with done homework: https://apichallenges.herokuapp.com/gui/challenges/c775ae8a-f5c4-41b6-9fc8-bc20fbfeffb9
 
 Information about Vikunja testing:
 
