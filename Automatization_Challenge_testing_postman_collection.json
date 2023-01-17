@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "b8ac51fb-90f7-4ff7-b6bc-d72d2c8c6c7e",
-		"name": "Challenge testing homework",
+		"_postman_id": "78cbd8fe-950d-4983-a4ef-31676d6540f0",
+		"name": "Automatization Challenge testing homework Dmitriev",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24296060"
 	},
@@ -16,9 +16,11 @@
 							"pm.test(\"Status code is 201\", function () {\r",
 							"    pm.response.to.have.status(201);\r",
 							"});\r",
-							"let track=pm.response.headers.get('X-Challenger')\r",
-							"console.log(track)\r",
-							"pm.environment.set(\"X-challenger\", track);"
+							"\r",
+							"const xChallenger = pm.response.headers.get(\"X-Challenger\")\r",
+							"console.log (xChallenger)\r",
+							"\r",
+							"pm.environment.set(\"autotokenChallenges\" , xChallenger)"
 						],
 						"type": "text/javascript"
 					}
@@ -28,9 +30,9 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{URLch}}/challenger",
+					"raw": "{{hostChallenger}}/challenger",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"challenger"
@@ -41,22 +43,41 @@
 		},
 		{
 			"name": "02. GET/challenges",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "X-Challenger",
-						"value": "{{X-challenger}}",
-						"type": "text"
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
 					}
-				],
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{autotokenChallenges}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Challenger",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
 				"url": {
-					"raw": "https://apichallenges.herokuapp.com/challenges",
-					"protocol": "https",
+					"raw": "{{hostChallenger}}/challenges",
 					"host": [
-						"apichallenges",
-						"herokuapp",
-						"com"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"challenges"
@@ -67,22 +88,45 @@
 		},
 		{
 			"name": "03. GET/todos",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "X-Challenger",
-						"value": "{{X-challenger}}",
-						"type": "text"
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var json1 = JSON.parse(responseBody)\r",
+							"pm.environment.set(\"todoID\", json1.todos[0].id)\r",
+							"console.log(json1.todos[0].id)"
+						],
+						"type": "text/javascript"
 					}
-				],
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{autotokenChallenges}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Challenger",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
 				"url": {
-					"raw": "https://apichallenges.herokuapp.com/todos",
-					"protocol": "https",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"apichallenges",
-						"herokuapp",
-						"com"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -93,22 +137,41 @@
 		},
 		{
 			"name": "04. GET/todo (404)",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "X-Challenger",
-						"value": "{{X-challenger}}",
-						"type": "text"
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
 					}
-				],
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{autotokenChallenges}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Challenger",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
 				"url": {
-					"raw": "https://apichallenges.herokuapp.com/todo",
-					"protocol": "https",
+					"raw": "{{hostChallenger}}/todo",
 					"host": [
-						"apichallenges",
-						"herokuapp",
-						"com"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todo"
@@ -119,7 +182,35 @@
 		},
 		{
 			"name": "05. GET/todos/ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{autotokenChallenges}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Challenger",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
@@ -129,16 +220,13 @@
 					}
 				],
 				"url": {
-					"raw": "https://apichallenges.herokuapp.com/todos/1026",
-					"protocol": "https",
+					"raw": "{{hostChallenger}}/todos/{{todoID}}",
 					"host": [
-						"apichallenges",
-						"herokuapp",
-						"com"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos",
-						"1026"
+						"{{todoID}}"
 					]
 				}
 			},
@@ -146,26 +234,51 @@
 		},
 		{
 			"name": "06. GET/todos/161 (404)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{autotokenChallenges}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "X-Challenger",
-						"value": "b692b14f-5cb3-4a2c-a6f5-5584c2fe6f18",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "https://apichallenges.herokuapp.com/todos/161",
-					"protocol": "https",
+					"raw": "{{hostChallenger}}/todos/16",
 					"host": [
-						"apichallenges",
-						"herokuapp",
-						"com"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos",
-						"161"
+						"16"
 					]
 				}
 			},
@@ -173,7 +286,35 @@
 		},
 		{
 			"name": "07. HEAD/todos/ (only headers)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{autotokenChallenges}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Challenger",
+							"type": "string"
+						}
+					]
+				},
 				"method": "HEAD",
 				"header": [
 					{
@@ -183,12 +324,9 @@
 					}
 				],
 				"url": {
-					"raw": "https://apichallenges.herokuapp.com/todos",
-					"protocol": "https",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"apichallenges",
-						"herokuapp",
-						"com"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -199,15 +337,43 @@
 		},
 		{
 			"name": "08. POST/todos/ (new ID)",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "X-Challenger",
-						"value": "{{X-challenger}}",
-						"type": "text"
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"var json1 = JSON.parse(responseBody)\r",
+							"pm.expect(json1.doneStatus).to.eql(true)\r",
+							"pm.expect(json1.title).to.eql(\"incididunt ut labore\")\r",
+							"console.log(json1.doneStatus)\r",
+							"console.log(json1.title)"
+						],
+						"type": "text/javascript"
 					}
-				],
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{autotokenChallenges}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-Challenger",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n  \"title\": \"incididunt ut labore\",\r\n  \"doneStatus\": true,\r\n  \"description\": \"si ut aliquip ex eaa\"\r\n}",
@@ -218,12 +384,9 @@
 					}
 				},
 				"url": {
-					"raw": "https://apichallenges.herokuapp.com/todos",
-					"protocol": "https",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"apichallenges",
-						"herokuapp",
-						"com"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -234,22 +397,35 @@
 		},
 		{
 			"name": "09. GET/todos?doneStatus=true",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "X-Challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "https://apichallenges.herokuapp.com/todos?doneStatus=true",
-					"protocol": "https",
+					"raw": "{{hostChallenger}}/todos?doneStatus=true",
 					"host": [
-						"apichallenges",
-						"herokuapp",
-						"com"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -266,12 +442,28 @@
 		},
 		{
 			"name": "10. POST/todos (failed doneStatus)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "X-Challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					}
 				],
@@ -285,12 +477,9 @@
 					}
 				},
 				"url": {
-					"raw": "https://apichallenges.herokuapp.com/todos",
-					"protocol": "https",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"apichallenges",
-						"herokuapp",
-						"com"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -308,18 +497,34 @@
 		},
 		{
 			"name": "11. POST/todos/ID (rename)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "X-Challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n            \"id\": 1038,\r\n            \"title\": \"new title by Alex\",\r\n            \"doneStatus\": false,\r\n            \"description\": \"\"\r\n        }",
+					"raw": "{\r\n            \r\n            \"title\": \"new title by Alexx\",\r\n            \"doneStatus\": false,\r\n            \"description\": \"\"\r\n        }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -327,16 +532,13 @@
 					}
 				},
 				"url": {
-					"raw": "https://apichallenges.herokuapp.com/todos/1038",
-					"protocol": "https",
+					"raw": "{{hostChallenger}}/todos/{{todoID}}",
 					"host": [
-						"apichallenges",
-						"herokuapp",
-						"com"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos",
-						"1038"
+						"{{todoID}}"
 					]
 				}
 			},
@@ -344,18 +546,34 @@
 		},
 		{
 			"name": "12. DELETE/todos/ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
-				"method": "POST",
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
 				"header": [
 					{
 						"key": "X-Challenger",
-						"value": "b692b14f-5cb3-4a2c-a6f5-5584c2fe6f18",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n            \"id\": 1677,\r\n            \"title\": \"new title by Alex\",\r\n            \"doneStatus\": false,\r\n            \"description\": \"\"\r\n        }",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -363,16 +581,13 @@
 					}
 				},
 				"url": {
-					"raw": "https://apichallenges.herokuapp.com/todos/1677",
-					"protocol": "https",
+					"raw": "{{hostChallenger}}/todos/{{todoID}}",
 					"host": [
-						"apichallenges",
-						"herokuapp",
-						"com"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos",
-						"1677"
+						"{{todoID}}"
 					]
 				}
 			},
@@ -380,23 +595,38 @@
 		},
 		{
 			"name": "13. OPTIONS/todos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "OPTIONS",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{URLch}}/todos/DELETE",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
-						"todos",
-						"DELETE"
+						"todos"
 					]
 				}
 			},
@@ -404,15 +634,31 @@
 		},
 		{
 			"name": "14. GET/todos (XML)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -422,9 +668,9 @@
 					}
 				],
 				"url": {
-					"raw": "{{URLch}}/todos",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -435,17 +681,33 @@
 		},
 		{
 			"name": "15. GET/todos (JSON)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
 				}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -455,9 +717,9 @@
 					}
 				],
 				"url": {
-					"raw": "{{URLch}}/todos",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -468,10 +730,38 @@
 		},
 		{
 			"name": "16. GET/todos (ANY)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {}
 			},
 			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{autotokenChallenges}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
@@ -487,9 +777,9 @@
 					}
 				],
 				"url": {
-					"raw": "{{URLch}}/todos",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -500,17 +790,33 @@
 		},
 		{
 			"name": "17. GET/todos (XML pref)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
 				}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -520,9 +826,9 @@
 					}
 				],
 				"url": {
-					"raw": "{{URLch}}/todos",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -533,17 +839,33 @@
 		},
 		{
 			"name": "18. GET/todos (JSON default)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
 				}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -554,9 +876,9 @@
 					}
 				],
 				"url": {
-					"raw": "{{URLch}}/todos",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -567,17 +889,33 @@
 		},
 		{
 			"name": "19. GET/todos (not acceptable)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 406\", function () {\r",
+							"    pm.response.to.have.status(406);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
 				}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -587,9 +925,9 @@
 					}
 				],
 				"url": {
-					"raw": "{{URLch}}/todos",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -600,17 +938,33 @@
 		},
 		{
 			"name": "20. POST/todos XML",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
 				}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -621,8 +975,7 @@
 					{
 						"key": "Content-Type",
 						"value": "application/xml",
-						"type": "text",
-						"disabled": true
+						"type": "text"
 					}
 				],
 				"body": {
@@ -635,9 +988,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/todos",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -648,17 +1001,33 @@
 		},
 		{
 			"name": "21. POST/todos JSON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
 				}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -668,9 +1037,8 @@
 					},
 					{
 						"key": "Content-Type",
-						"value": "application/xml",
-						"type": "text",
-						"disabled": true
+						"value": "application/json",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -683,9 +1051,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/todos",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -696,17 +1064,33 @@
 		},
 		{
 			"name": "22. POST/todos not supported",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 415\", function () {\r",
+							"    pm.response.to.have.status(415);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
 				}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -730,9 +1114,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/todos",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -743,17 +1127,33 @@
 		},
 		{
 			"name": "23. POST/todos XML to JSON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
 				}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -763,9 +1163,8 @@
 					},
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text",
-						"disabled": true
+						"value": "application/xml",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -778,9 +1177,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/todos",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -791,17 +1190,33 @@
 		},
 		{
 			"name": "24. POST/todos JSON to XML",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"accept": true
 				}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -812,8 +1227,7 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json",
-						"type": "text",
-						"disabled": true
+						"type": "text"
 					}
 				],
 				"body": {
@@ -826,9 +1240,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/todos",
+					"raw": "{{hostChallenger}}/todos",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"todos"
@@ -839,17 +1253,33 @@
 		},
 		{
 			"name": "25. DELETE/heartbeat 405",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"content-type": true
 				}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "DELETE",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -875,9 +1305,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/heartbeat",
+					"raw": "{{hostChallenger}}/heartbeat",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"heartbeat"
@@ -888,17 +1318,33 @@
 		},
 		{
 			"name": "26. PATCH/heartbeat 500",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"content-type": true
 				}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "PATCH",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -924,9 +1370,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/heartbeat",
+					"raw": "{{hostChallenger}}/heartbeat",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"heartbeat"
@@ -937,17 +1383,33 @@
 		},
 		{
 			"name": "27. TRACE/heartbeat 501",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 501\", function () {\r",
+							"    pm.response.to.have.status(501);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"content-type": true
 				}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "TRACE",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -973,9 +1435,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/heartbeat",
+					"raw": "{{hostChallenger}}/heartbeat",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"heartbeat"
@@ -986,6 +1448,19 @@
 		},
 		{
 			"name": "28. GET/heartbeat 204",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true,
 				"disabledSystemHeaders": {
@@ -993,11 +1468,14 @@
 				}
 			},
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -1023,9 +1501,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/heartbeat",
+					"raw": "{{hostChallenger}}/heartbeat",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"heartbeat"
@@ -1036,6 +1514,19 @@
 		},
 		{
 			"name": "29. POST/secret/token 401",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"content-type": true
@@ -1061,7 +1552,7 @@
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -1087,9 +1578,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/secret/token",
+					"raw": "{{hostChallenger}}/secret/token",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"secret",
@@ -1101,6 +1592,24 @@
 		},
 		{
 			"name": "30. POST/secret/token 201",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"const xAuthToken = pm.response.headers.get(\"X-Auth-Token\")\r",
+							"console.log (xAuthToken)\r",
+							"\r",
+							"pm.environment.set(\"X-Auth-Token\" , xAuthToken)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"content-type": true
@@ -1126,7 +1635,7 @@
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -1152,9 +1661,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/secret/token",
+					"raw": "{{hostChallenger}}/secret/token",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"secret",
@@ -1166,6 +1675,19 @@
 		},
 		{
 			"name": "31. GET/secret/note 403",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true,
 				"disabledSystemHeaders": {
@@ -1174,25 +1696,13 @@
 			},
 			"request": {
 				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "username",
-							"value": "admin",
-							"type": "string"
-						},
-						{
-							"key": "password",
-							"value": "password",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -1223,9 +1733,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/secret/note",
+					"raw": "{{hostChallenger}}/secret/note",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"secret",
@@ -1237,6 +1747,19 @@
 		},
 		{
 			"name": "32. GET/secret/note 401",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true,
 				"disabledSystemHeaders": {
@@ -1245,25 +1768,13 @@
 			},
 			"request": {
 				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "username",
-							"value": "admin",
-							"type": "string"
-						},
-						{
-							"key": "password",
-							"value": "password",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -1295,9 +1806,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/secret/note",
+					"raw": "{{hostChallenger}}/secret/note",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"secret",
@@ -1309,6 +1820,19 @@
 		},
 		{
 			"name": "33. GET/secret/note 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true,
 				"disabledSystemHeaders": {
@@ -1317,25 +1841,13 @@
 			},
 			"request": {
 				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "username",
-							"value": "admin",
-							"type": "string"
-						},
-						{
-							"key": "password",
-							"value": "password",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -1352,7 +1864,7 @@
 					},
 					{
 						"key": "X-AUTH-TOKEN",
-						"value": "ca0c2a3f-2526-43f2-80aa-4aa7d58635a5",
+						"value": "{{X-Auth-Token}}",
 						"type": "text"
 					}
 				],
@@ -1366,9 +1878,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/secret/note",
+					"raw": "{{hostChallenger}}/secret/note",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"secret",
@@ -1380,6 +1892,19 @@
 		},
 		{
 			"name": "34. POST/secret/note 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"content-type": true
@@ -1387,25 +1912,13 @@
 			},
 			"request": {
 				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "username",
-							"value": "admin",
-							"type": "string"
-						},
-						{
-							"key": "password",
-							"value": "password",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -1421,7 +1934,7 @@
 					},
 					{
 						"key": "X-AUTH-TOKEN",
-						"value": "ca0c2a3f-2526-43f2-80aa-4aa7d58635a5",
+						"value": "{{X-Auth-Token}}",
 						"type": "text"
 					}
 				],
@@ -1435,9 +1948,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/secret/note",
+					"raw": "{{hostChallenger}}/secret/note",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"secret",
@@ -1449,6 +1962,19 @@
 		},
 		{
 			"name": "35. POST/secret/note 401",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"content-type": true
@@ -1456,25 +1982,13 @@
 			},
 			"request": {
 				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "username",
-							"value": "admin",
-							"type": "string"
-						},
-						{
-							"key": "password",
-							"value": "password",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -1505,9 +2019,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/secret/note",
+					"raw": "{{hostChallenger}}/secret/note",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"secret",
@@ -1519,6 +2033,19 @@
 		},
 		{
 			"name": "36. POST/secret/note 403",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"content-type": true
@@ -1526,25 +2053,13 @@
 			},
 			"request": {
 				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "username",
-							"value": "admin",
-							"type": "string"
-						},
-						{
-							"key": "password",
-							"value": "password",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -1574,9 +2089,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/secret/note",
+					"raw": "{{hostChallenger}}/secret/note",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"secret",
@@ -1588,6 +2103,19 @@
 		},
 		{
 			"name": "37. GET/secret/note (Bearer) 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true,
 				"disabledSystemHeaders": {
@@ -1600,7 +2128,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "ca0c2a3f-2526-43f2-80aa-4aa7d58635a5",
+							"value": "{{X-Auth-Token}}",
 							"type": "string"
 						}
 					]
@@ -1609,7 +2137,7 @@
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -1640,9 +2168,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/secret/note",
+					"raw": "{{hostChallenger}}/secret/note",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"secret",
@@ -1654,6 +2182,19 @@
 		},
 		{
 			"name": "38. POST/secret/note (Bearer) 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
 					"content-type": true
@@ -1665,7 +2206,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "ca0c2a3f-2526-43f2-80aa-4aa7d58635a5",
+							"value": "{{X-Auth-Token}}",
 							"type": "string"
 						}
 					]
@@ -1674,7 +2215,7 @@
 				"header": [
 					{
 						"key": "X-challenger",
-						"value": "{{X-challenger}}",
+						"value": "{{autotokenChallenges}}",
 						"type": "text"
 					},
 					{
@@ -1697,7 +2238,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"note\":\"alex108108\"}",
+					"raw": "{\"note\":\"alexx\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1705,72 +2246,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLch}}/secret/note",
+					"raw": "{{hostChallenger}}/secret/note",
 					"host": [
-						"{{URLch}}"
+						"{{hostChallenger}}"
 					],
 					"path": [
 						"secret",
 						"note"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "39. DELETE/todos 200",
-			"protocolProfileBehavior": {
-				"disabledSystemHeaders": {
-					"content-type": true
-				}
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "X-challenger",
-						"value": "{{X-challenger}}",
-						"type": "text"
-					},
-					{
-						"key": "Accept",
-						"value": "application/xml",
-						"type": "text",
-						"disabled": true
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text",
-						"disabled": true
-					},
-					{
-						"key": "X-AUTH-TOKEN",
-						"value": "ca0c2a3f-2526-43f2-80aa-4aa7d58635a5",
-						"type": "text",
-						"disabled": true
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"note\":\"alex108108\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{URLch}}/todos/1020",
-					"host": [
-						"{{URLch}}"
-					],
-					"path": [
-						"todos",
-						"1020"
 					]
 				}
 			},
